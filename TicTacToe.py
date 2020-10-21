@@ -1,20 +1,13 @@
-# We are going to build a one-player tic-tac-toe game, which we can play in the command-line. 
-# Initially, we’ll make an empty game board and then we’ll take inputs from the player 
-# and we’ll check for the winning condition and if the whole board gets filled and no one wins, 
-# we’ll declare the result as “Tie” and ask users if they want to restart the game.
-
-board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-def emptyBoard(): # Creating an empty board if the player wants to start playing or replay.
-    board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+# Tic Tac Toe game. Currently no AI. Still have to look into it.
 
 def printBoard(): # Printing the board
-    print("_______")
+    print("-------")
     print("|" + board[0] + "|" + board[1] + "|" + board[2] + "|")
-    print("_______")
+    print("-------")
     print("|" + board[3] + "|" + board[4] + "|" + board[5] + "|")
-    print("_______")
+    print("-------")
     print("|" + board[6] + "|" + board[7] + "|" + board[8] + "|")
-    print("_______")
+    print("-------")
 
 def takeInput(): # Taking the input
     print("Please enter your answer. Use the commands as instructed, such as 'mid-L', 'bot-R' and 'top-M'.")
@@ -22,36 +15,26 @@ def takeInput(): # Taking the input
     playerInput = input()
 
     if playerInput == "top-L":
-        useInput(board[0])
+        board[0] = player
     elif playerInput == "top-M":
-        useInput(board[1])
+        board[1] = player
     elif playerInput == "top-R":
-        useInput(board[2])
+        board[2] = player
     elif playerInput == "mid-L":
-        useInput(board[3])
+        board[3] = player
     elif playerInput == "mid-M":
-        useInput(board[4])
+        board[4] = player
     elif playerInput == "mid-R":
-        useInput(board[5])
+        board[5] = player
     elif playerInput == "bot-L":
-        useInput(board[6])
+        board[6] = player
     elif playerInput == "bot-M":
-        useInput(board[7])
+        board[7] = player
     elif playerInput == "bot-R":
-        useInput(board[8])
+        board[8] = player
     else:
         takeInput()
 
-def useInput(position): 
-    # Checking if the input is valid and then putting the input of the player on the board.
-    if position == ('X' or 'Y'):
-        print("This position is already used. Please try another position.")
-        takeInput()
-    else:
-        if playerX == True:
-            position = 'X'
-        else:
-            position = 'O'
 
 def winCheck(): # Checking if a player has won.
     if board[0] == board[1] == board[2] == ('X' or 'O'): # Top line horizontal
@@ -74,34 +57,74 @@ def winCheck(): # Checking if a player has won.
         return False
 
 def fullBoardCheck(): # Check if the board is full, if True then the game will be declared a Tie.
-    if (board.count('X') + board.count('Y')) == 9:
+    counter = 0
+    Ycounter = 0
+    for i in board:
+        if i == 'X':
+            counter = counter + 1
+        elif i == 'O':
+            Ycounter = Ycounter + 1
+    if counter + Ycounter == 9:
         return True
     else:
         return False
 
-def gameWon():
-    print("You have won! Congratulations! You have won exactly nothing but fame!")
+def gameFinished(): # If the game is over, does the user want to play again?
+    printBoard()
+    print("The game has ended!")
     print("Do you want to play again? Enter 'Yes' or 'No'.")
     playAgain = input()
     if playAgain == "Yes":
-        emptyBoard()
+        return True
     else:
         print("Thank you for playing!")
-        exit()
+        return False
 
-
-while fullBoardCheck() == False:
-    print("Welcome to the game of Tic Tac Toe. This game is played via the Command Line Interface as you know.")
-    print("Time to play! Player X gets to start first.")
+# Declaring some variables.
+gameState = True
+board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+# Printing the start of the game.
+print("Welcome to the game of Tic Tac Toe. This game is played via the Command Line Interface as you know.")
+print("Enjoy the game!")
+# Game starts here. The while loop is basically 2x the same thing.
+while gameState:
+    print("Processing....")
     printBoard()
-    playerX = True
+    player = 'X'
     takeInput()
     if winCheck():
-        gameWon()
-        continue
+        print("You won!! Let all your friends know!")
+        if gameFinished():
+            board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+            continue
+        else:
+            gameState = False
+            continue
+    if fullBoardCheck(): 
+        print("You have tied the game. Please let all your friends know you both SUCK! :D")
+        if gameFinished():
+            board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+            continue
+        else:
+            gameState = False
+            continue
     printBoard()
-    playerX = False
+    player = 'O'
     takeInput()
     if winCheck():
-        gameWon()
-        continue
+        print("You won!! Let all your friends know!")
+        if gameFinished():
+            board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+            continue
+        else:
+            gameState = False
+            continue
+    elif fullBoardCheck(): 
+        print("You have tied the game. Please let all your friends know you both SUCK! :D")
+        if gameFinished():
+            board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+            continue
+        else:
+            gameState = False
+            continue
+    
